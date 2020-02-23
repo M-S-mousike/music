@@ -40,7 +40,7 @@
 				function Transposer(){
 					//コードの循環操作で使用する配列を定義
 				    var keySharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
-				               "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+				                     "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 				               
 				    //オリジナルのキーを取得
 				    var selectedKey = document.getElementById("key").value;
@@ -105,10 +105,10 @@
 				        if (afterKey == "F" || afterKey == "Bb" || afterKey == "Eb" ||
 				            afterKey == "Ab" || afterKey == "Db"){
 				       		     var transposedChords = transposed.replace(/C#/g, "Db")
-		                                 					           .replace(/D#/g, "Eb")
-							                                           .replace(/F#/g, "Gb")  
-							                                           .replace(/G#/g, "Ab") 
-							                                           .replace(/A#/g, "Bb");
+		                                 					      .replace(/D#/g, "Eb")
+							                                      .replace(/F#/g, "Gb")  
+							                                      .replace(/G#/g, "Ab") 
+							                                      .replace(/A#/g, "Bb");
 				            }
 				        else{
 				                var transposedChords = transposed;
