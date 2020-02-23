@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>transposer</title>
+        <script type="text/javascript">
+        //Javascript記述部
+				//（１）移調後のキーを計算する関数
+					//移調後のキーを格納する変数を定義
+					var afterKey;
+					
+					//関数を定義
+					function displayKey(){
+						//キーの循環操作で使用する配列を定義
+					    var keys = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B",
+					               "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
+					    
+					    //オリジナルのキーを取得
+					    var selectedKey = document.getElementById("key").value;
+					    
+					    //移調の度合いを取得
+					    var number = document.getElementById("distance").value
+					
+						//移調の度合いを整数型に直す
+					    var selectedDistance = Number(number);
+					    
+					    //オリジナルのキーのインデックスを取得
+					    var index = keys.indexOf(selectedKey);
+					
+						//移調後のキーを計算
+					    afterKey = keys[index + selectedDistance];
+					    
+					    //移調後のキーを表示
+					    document.getElementById("changedKey").textContent = (afterKey);
+					    
+					};
+		
+		
+			//（２）コードを移調し表示する関数
+				function Transposer(){
+					//コードの循環操作で使用する配列を定義
+				    var keySharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
+				               "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+				               
+				    //オリジナルのキーを取得
+				    var selectedKey = document.getElementById("key").value;
+					//移調の度合いを取得
+				    var number = document.getElementById("distance").value
+					//移調の度合いを整数型に直す
+				    var selectedDistance = Number(number);
+				    
+				    //文字列の置換セットを定義（ディクショナリ）
+				    var changeSet = {
+				    "C" : keySharp[0 + selectedDistance],
+				    "D" : keySharp[2 + selectedDistance],
+				    "E" : keySharp[4 + selectedDistance],
+				    "F" : keySharp[5 + selectedDistance],
+				    "G" : keySharp[7 + selectedDistance],
+				    "A" : keySharp[9 + selectedDistance], 
+				    "B" : keySharp[11 + selectedDistance]
+				    },
+				    
+				    //置換対象を正規表現で定義（C-Bのいずれかに該当すれば良い）
+				    re = /[CDEFGAB]/g;
+				
+				    //replace関数の引数として使用する関数を定義
+					//置換対象の文字列を引数とし、戻り値は（キーに対応する）置換後の文字列となる
+				    function replacer(match) {
+				    	return changeSet[match];
+				    	};
+				    
+				    //移調前のコード進行を取得
+				    var original = document.getElementById("origin").value;
+				
+					//移調を行う
+				    var transposed = original.replace(re, replacer)
+				                           		//不自然な表記を修正 
+					                             .replace(/Cb/g, "B")  
+					                             .replace(/C#b/g, "C")  
+					                             .replace(/C##/g, "D") 
+					                             .replace(/D#b/g, "D")  
+					                             .replace(/D##/g, "E")                              
+					                             .replace(/E#b/g, "E")  
+					                             .replace(/E##/g, "F#") 
+					                             .replace(/E#/g, "F") 
+					                             .replace(/Fb/g, "E")  
+					                             .replace(/F#b/g, "F")  
+					                             .replace(/F##/g, "G")                              
+					                             .replace(/G#b/g, "G")  
+					                             .replace(/G##/g, "A") 
+					                             .replace(/A#b/g, "A")  
+					                             .replace(/A##/g, "B")                              
+					                             .replace(/B#b/g, "B")  
+					                             .replace(/B##/g, "C#")  
+					                             .replace(/B#/g, "C") 
+				    
+				                            //操作の便宜上、シャープに統一    
+					                             .replace(/Db/g, "C#")
+					                             .replace(/Eb/g, "D#")
+					                             .replace(/Gb/g, "F#")  
+					                             .replace(/Ab/g, "G#") 
+					                             .replace(/Bb/g, "A#");
+				    
+					    //キーによっては、#をbに変換
+				        if (afterKey == "F" || afterKey == "Bb" || afterKey == "Eb" ||
+				            afterKey == "Ab" || afterKey == "Db"){
+				       		     var transposedChords = transposed.replace(/C#/g, "Db")
+		                                 					           .replace(/D#/g, "Eb")
+							                                           .replace(/F#/g, "Gb")  
+							                                           .replace(/G#/g, "Ab") 
+							                                           .replace(/A#/g, "Bb");
+				            }
+				        else{
+				                var transposedChords = transposed;
+				            };
+				    
+				    //変換後のコード進行を出力・表示
+				    document.getElementById("posed").value = transposedChords;
+				};
+		
+		//（３）元のコード進行をクリアする関数
+			function Clear(){
+			    document.getElementById("origin").value = "";
+			};
+
+
+        </script>
+    </head>
+    
+    <body onload="displayKey()">
+        
+        <header>
+            <h1>移調ツール</h1>
+        <div id="tool">
+            <div id="selection">
+            元のキー：
+            <select id="key" size="1" onchange="displayKey()">
+                <option value="C">C（Am）</option>
+                <option value="Db">Db（Bbm）</option> 
+                <option value="D">D（Bm）</option>
+                <option value="Eb">Eb（Cm）</option> 
+                <option value="E">E（C#m）</option>
+                <option value="F">F（Dm）</option> 
+                <option value="F#">F#（D#m）</option>
+                <option value="G">G（Em）</option>
+                <option value="Ab">Ab（Fm）</option>
+                <option value="A">A（F#m）</option> 
+                <option value="Bb">Bb（Gm）</option>   
+                <option value="B">B（G#m）</option>
+            </select>　　移調：
+            <select id="distance" size="1" onchange="displayKey()">
+                <option value=1>+1（-11）</option>
+                <option value=2>+2（-10）</option> 
+                <option value=3>+3（-9）</option>
+                <option value=4>+4（-8）</option> 
+                <option value=5>+5（-7）</option>
+                <option value=6>+6（-6）</option> 
+                <option value=7>+7（-5）</option>
+                <option value=8>+8（-4）</option>
+                <option value=9>+9（-3）</option>
+                <option value=10>+10（-2）</option> 
+                <option value=11>+11（-1）</option>
+            </select>　　移調後のキー：<span id="changedKey"></span>
+            <input type="button" id="changing" value="移調" onClick="Transposer()">
+            <input type="button" value="元のコード進行をクリア" onClick="Clear()"> 　　　  
+            </div>
+        <div id="transpose">
+            <textarea id="origin" rows="50" cols="50" placeholder="元のコード進行を入力"></textarea>
+            <textarea id="posed" rows="50" cols="50" placeholder="移調後のコード進行が表示されます"></textarea>
+        </div>
+        </div>
+    </body>
+    
+</html>
