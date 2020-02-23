@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>enharmonic</title>
+        <script type="text/javascript">
+        //Javascript記述部
+				//（１）#をbに変換する関数
+				function SharpToFlat(){
+				    
+				    //元のコード進行を取得
+				    var originalChords = document.getElementById("origin").value;
+				
+					//変換
+				    var transposedChords = originalChords.replace(/C#/g, "Db")
+							                                .replace(/D#/g, "Eb")
+							                                .replace(/F#/g, "Gb")  
+							                                .replace(/G#/g, "Ab") 
+							                                .replace(/A#/g, "Bb");
+				    
+				    //表示
+				    document.getElementById("posed").value = transposedChords;
+				};
+				
+				//（２）bを#に変換する関数
+				function FlatToSharp(){
+					
+				    //元のコード進行を取得
+				    var originalChords = document.getElementById("origin").value;
+				    
+					//変換
+				    var transposedChords = originalChords.replace(/Db/g, "C#")
+							                                .replace(/Eb/g, "D#")
+							                                .replace(/Gb/g, "F#")  
+							                                .replace(/Ab/g, "G#") 
+							                                .replace(/Bb/g, "A#");
+							                                
+				    //表示
+				    document.getElementById("posed").value = transposedChords;
+				};
+				
+				//（３）元のコード進行をクリアする関数
+				function Clear(){
+				    document.getElementById("origin").value = "";
+				};
+
+
+        </script>
+    </head>
+    
+    <body onload="displayKey()">
+        
+        <header>
+            <h1>#b変換ツール</h1>
+        <div id="tool">
+            <div id="selection">　　　
+            <input type="button" value="変換前の入力内容をクリア" onClick="Clear()"> 　　　  
+            <input type="button" value="#をbに変換" onClick="SharpToFlat()">   
+            <input type="button" value="bを#に変換" onClick="FlatToSharp()">   
+            </div>
+        <div id="transpose">
+            <textarea id="origin" rows="50" cols="50" placeholder="変換前のコード進行を入力してください"></textarea>　　　
+            <textarea id="posed" rows="50" cols="50" placeholder="変換後のコード進行が表示されます"></textarea>
+        </div>
+        </div>
+    </body>
+    
+</html>
