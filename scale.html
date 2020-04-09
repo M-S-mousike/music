@@ -5,208 +5,209 @@
         <title>scale</title>
         <script type="text/javascript">
         //Javascript記述部
-				//（１）前提としての定義
-					//計算結果たる音程を格納する配列を定義
-					var resultIntervals = new Array(5);
+                //（１）前提としての定義
+                    //計算結果たる音程を格納する配列を定義
+                    var resultIntervals = new Array(5);
 
-					//音程の計算に使用する配列を定義
-					const notes = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B",
-					 "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
+                    //音程の計算に使用する配列を定義
+                    const notes = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B",
+                     "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
 
-					//インデックスの距離に応じた度数を格納する配列を定義
-					const intervals = ["1, 8", "m2, b9", "M2, 9", "m3, #9", "M3", "4, 11", "#4, b5, #11 (tritone) ", "5", "#5, m6, b13", "M6, 13", "m7", "M7"];
+                    //インデックスの距離に応じた度数を格納する配列を定義
+                    const intervals = ["1, 8", "m2, b9", "M2, 9", "m3, #9", "M3", "4, 11", "#4, b5, #11 (tritone) ", "5", "#5, m6, b13", "M6, 13", "m7", "M7"];
 
-				//（２）音程の計算
-					//関数を定義
-					function displayInterval(){
-					    //ルートを取得し、notes配列内でのインデックスを取得
-					    let root = document.getElementById("root").value;
-					    let rootIndex = notes.indexOf(root);
+                //（２）音程の計算
+                    //関数を定義
+                    function displayInterval(){
+                        //ルートを取得し、notes配列内でのインデックスを取得
+                        let root = document.getElementById("root").value;
+                        let rootIndex = notes.indexOf(root);
 
-					    //各構成音を取得し、音程を配列に格納（ループ処理）
-					    for(var i=0; i<5; i++){
-					    		//構成音を取得
-					    		let id = "note" + String(i+1);
-					    		let note = document.getElementById(id).value;
+                        //各構成音を取得し、音程を配列に格納（ループ処理）
+                        for(var i=0; i<5; i++){
+                                //構成音を取得
+                                let id = "note" + String(i+1);
+                                let note = document.getElementById(id).value;
 
-					    		//A. 構成音が指定されていない（none）の場合
-					    		if(note == "none"){
-					    				resultIntervals[i] = "none";
-					    		}
+                                //A. 構成音が指定されていない（none）の場合
+                                if(note == "none"){
+                                        resultIntervals[i] = "none";
+                                }
 
-					    		//B. そうではない場合
-					    		else{
-							    		//音程を計算
-							    		let distance = notes.indexOf(note, rootIndex) - rootIndex;
+                                //B. そうではない場合
+                                else{
+                                        //音程を計算
+                                        let distance = notes.indexOf(note, rootIndex) - rootIndex;
 
-							    		//配列に格納
-							    		resultIntervals[i] = intervals[distance];
-					    		}
-					    }
+                                        //配列に格納
+                                        resultIntervals[i] = intervals[distance];
+                                }
+                        }
 
-					    //音程を表示（ループ処理）
-					    for(var i=0; i<5; i++){
-					    		//表示場所idを定義
-					    		let id = "interval" + String(i+1);
+                        //音程を表示（ループ処理）
+                        for(var i=0; i<5; i++){
+                                //表示場所idを定義
+                                let id = "interval" + String(i+1);
 
-					    		//対応する音程を代入
-								document.getElementById(id).value = resultIntervals[i];
-					    }
-					};
+                                //対応する音程を代入
+                                document.getElementById(id).value = resultIntervals[i];
+                        }
+                    };
 
-			//（３）有り得るスケールを計算
-				//A. 前提として、スケールを定義
-					//スケールを格納するディクショナリを初期化
-					var scales = {};
+            //（３）有り得るスケールを計算
+                //A. 前提として、スケールを定義
+                    //スケールを格納するディクショナリを初期化
+                    var scales = {};
 
-					//(i) メジャースケール
-						//メジャースケールを格納するディクショナリを初期化
-						var majorScales = {};
+                    //(i) メジャースケール
+                        //メジャースケールを格納するディクショナリを初期化
+                        var majorScales = {};
 
-						//ループ処理で、C~Bまでの各メジャースケールを配列として作成
-						for(var i=0; i<12; i++){
-								//主音を定義
-								let tonic = notes[i];
-								let majorScale = new Array(7);
+                        //ループ処理で、C~Bまでの各メジャースケールを配列として作成
+                        for(var i=0; i<12; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let majorScale = new Array(7);
 
-								//メジャースケールの各音を配列に代入
-								majorScale[0] = notes[i];
-								majorScale[1] = notes[i+2];
-								majorScale[2] = notes[i+4];
-								majorScale[3] = notes[i+5];
-								majorScale[4] = notes[i+7];
-								majorScale[5] = notes[i+9];
-								majorScale[6] = notes[i+11];
+                                //メジャースケールの各音を配列に代入
+                                majorScale[0] = notes[i];
+                                majorScale[1] = notes[i+2];
+                                majorScale[2] = notes[i+4];
+                                majorScale[3] = notes[i+5];
+                                majorScale[4] = notes[i+7];
+                                majorScale[5] = notes[i+9];
+                                majorScale[6] = notes[i+11];
 
-								//ディクショナリに格納
-								majorScales[tonic] = majorScale;
-						}
+                                //ディクショナリに格納
+                                majorScales[tonic] = majorScale;
+                        }
 
-						//ディクショナリに格納
-						scales["major"] = majorScales;
+                        //ディクショナリに格納
+                        scales["major"] = majorScales;
 
-					//(ii) メロディックマイナースケール
-						//メロディックマイナースケールを格納するディクショナリを初期化
-						var melodicMinorScales = {};
+                    //(ii) メロディックマイナースケール
+                        //メロディックマイナースケールを格納するディクショナリを初期化
+                        var melodicMinorScales = {};
 
-						//ループ処理で、C~Bまでの各メロディックマイナースケールを配列として作成
-						for(var i=0; i<12; i++){
-								//主音を定義
-								let tonic = notes[i];
-								let melodicMinorScale = new Array(7);
+                        //ループ処理で、C~Bまでの各メロディックマイナースケールを配列として作成
+                        for(var i=0; i<12; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let melodicMinorScale = new Array(7);
 
-								//メロディックマイナーの各音を配列に代入
-								melodicMinorScale[0] = notes[i];
-								melodicMinorScale[1] = notes[i+2];
-								melodicMinorScale[2] = notes[i+3];
-								melodicMinorScale[3] = notes[i+5];
-								melodicMinorScale[4] = notes[i+7];
-								melodicMinorScale[5] = notes[i+9];
-								melodicMinorScale[6] = notes[i+11];
+                                //メロディックマイナーの各音を配列に代入
+                                melodicMinorScale[0] = notes[i];
+                                melodicMinorScale[1] = notes[i+2];
+                                melodicMinorScale[2] = notes[i+3];
+                                melodicMinorScale[3] = notes[i+5];
+                                melodicMinorScale[4] = notes[i+7];
+                                melodicMinorScale[5] = notes[i+9];
+                                melodicMinorScale[6] = notes[i+11];
 
-								//ディクショナリに格納
-								melodicMinorScales[tonic] = melodicMinorScale;
-						}
+                                //ディクショナリに格納
+                                melodicMinorScales[tonic] = melodicMinorScale;
+                        }
 
-						//ディクショナリに格納
-						scales["melodic minor"] = melodicMinorScales;
+                        //ディクショナリに格納
+                        scales["melodic minor"] = melodicMinorScales;
 
-					//(iii) ディミニッシュドスケール（half-step/whole-step）
-						//ディミニッシュドスケールを格納するディクショナリを初期化
-						var HalfWholeDiminishedScales = {};
+                    //(iii) ディミニッシュドスケール（half-step/whole-step）
+                        //ディミニッシュドスケールを格納するディクショナリを初期化
+                        var HalfWholeDiminishedScales = {};
 
-						//ループ処理で、C~Dまでの各ディミニッシュドスケールを配列として作成
-						for(var i=0; i<3; i++){
-								//主音を定義
-								let tonic = notes[i];
-								let HalfWholeDiminishedScale = new Array(8);
+                        //ループ処理で、C~Dまでの各ディミニッシュドスケールを配列として作成
+                        for(var i=0; i<3; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let HalfWholeDiminishedScale = new Array(8);
 
-								//ディミニッシュドスケールの各音を配列に代入
-								HalfWholeDiminishedScale[0] = notes[i];
-								HalfWholeDiminishedScale[1] = notes[i+1];
-								HalfWholeDiminishedScale[2] = notes[i+3];
-								HalfWholeDiminishedScale[3] = notes[i+4];
-								HalfWholeDiminishedScale[4] = notes[i+6];
-								HalfWholeDiminishedScale[5] = notes[i+7];
-								HalfWholeDiminishedScale[6] = notes[i+9];
-								HalfWholeDiminishedScale[7] = notes[i+10];
+                                //ディミニッシュドスケールの各音を配列に代入
+                                HalfWholeDiminishedScale[0] = notes[i];
+                                HalfWholeDiminishedScale[1] = notes[i+1];
+                                HalfWholeDiminishedScale[2] = notes[i+3];
+                                HalfWholeDiminishedScale[3] = notes[i+4];
+                                HalfWholeDiminishedScale[4] = notes[i+6];
+                                HalfWholeDiminishedScale[5] = notes[i+7];
+                                HalfWholeDiminishedScale[6] = notes[i+9];
+                                HalfWholeDiminishedScale[7] = notes[i+10];
 
-								//ディクショナリのキーを定義
-								let key = tonic + "(" + notes[i+3] + "," + notes[i+6] + "," + notes[i+9] + ")";
+                                //ディクショナリのキーを定義
+                                let key = tonic + "(" + notes[i+3] + "," + notes[i+6] + "," + notes[i+9] + ")";
 
-								//ディクショナリに格納
-								HalfWholeDiminishedScales[key] = HalfWholeDiminishedScale;
-						}
+                                //ディクショナリに格納
+                                HalfWholeDiminishedScales[key] = HalfWholeDiminishedScale;
+                        }
 
-						//ディクショナリに格納
-						scales["half-step/whole-step diminished"] = HalfWholeDiminishedScales;
+                        //ディクショナリに格納
+                        scales["half-step/whole-step diminished"] = HalfWholeDiminishedScales;
 
-					//(iv) ディミニッシュドスケール（whole-step/half-step）
-						//ディミニッシュドスケールを格納するディクショナリを初期化
-						var WholeHalfDiminishedScales = {};
+                    //(iv) ディミニッシュドスケール（whole-step/half-step）
+                        //ディミニッシュドスケールを格納するディクショナリを初期化
+                        var WholeHalfDiminishedScales = {};
 
-						//ループ処理で、C~Dまでの各ディミニッシュドスケールを配列として作成
-						for(var i=0; i<3; i++){
-								//主音を定義
-								let tonic = notes[i];
-								let WholeHalfDiminishedScale = new Array(8);
+                        //ループ処理で、C~Dまでの各ディミニッシュドスケールを配列として作成
+                        for(var i=0; i<3; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let WholeHalfDiminishedScale = new Array(8);
 
-								//ディミニッシュドスケールの各音を配列に代入
-								WholeHalfDiminishedScale[0] = notes[i];
-								WholeHalfDiminishedScale[1] = notes[i+2];
-								WholeHalfDiminishedScale[2] = notes[i+3];
-								WholeHalfDiminishedScale[3] = notes[i+5];
-								WholeHalfDiminishedScale[4] = notes[i+6];
-								WholeHalfDiminishedScale[5] = notes[i+8];
-								WholeHalfDiminishedScale[6] = notes[i+9];
-								WholeHalfDiminishedScale[7] = notes[i+11];
+                                //ディミニッシュドスケールの各音を配列に代入
+                                WholeHalfDiminishedScale[0] = notes[i];
+                                WholeHalfDiminishedScale[1] = notes[i+2];
+                                WholeHalfDiminishedScale[2] = notes[i+3];
+                                WholeHalfDiminishedScale[3] = notes[i+5];
+                                WholeHalfDiminishedScale[4] = notes[i+6];
+                                WholeHalfDiminishedScale[5] = notes[i+8];
+                                WholeHalfDiminishedScale[6] = notes[i+9];
+                                WholeHalfDiminishedScale[7] = notes[i+11];
 
-								//ディクショナリのキーを定義
-								let key = tonic + "(" + notes[i+3] + "," + notes[i+6] + "," + notes[i+9] + ")";
+                                //ディクショナリのキーを定義
+                                let key = tonic + "(" + notes[i+3] + "," + notes[i+6] + "," + notes[i+9] + ")";
 
-								//ディクショナリに格納
-								WholeHalfDiminishedScales[key] = WholeHalfDiminishedScale;
-						}
+                                //ディクショナリに格納
+                                WholeHalfDiminishedScales[key] = WholeHalfDiminishedScale;
+                        }
 
-						//ディクショナリに格納
-						scales["whole-step/half-step diminished"] = WholeHalfDiminishedScales;
+                        //ディクショナリに格納
+                        scales["whole-step/half-step diminished"] = WholeHalfDiminishedScales;
 
-					//(v) ホールトーンスケール
-						//ホールトーンスケールを格納するディクショナリを初期化
-						var WholeToneScales = {};
+                    //(v) ホールトーンスケール
+                        //ホールトーンスケールを格納するディクショナリを初期化
+                        var WholeToneScales = {};
 
-						//ループ処理で、C~Dbまでの各ホールトーンスケールを配列として作成
-						for(var i=0; i<2; i++){
-								//主音を定義
-								let tonic = notes[i];
-								let WholeToneScale = new Array(6);
+                        //ループ処理で、C~Dbまでの各ホールトーンスケールを配列として作成
+                        for(var i=0; i<2; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let WholeToneScale = new Array(6);
 
-								//ホールトーンの各音を配列に代入
-								WholeToneScale[0] = notes[i];
-								WholeToneScale[1] = notes[i+2];
-								WholeToneScale[2] = notes[i+4];
-								WholeToneScale[3] = notes[i+6];
-								WholeToneScale[4] = notes[i+8];
-								WholeToneScale[5] = notes[i+10];
+                                //ホールトーンの各音を配列に代入
+                                WholeToneScale[0] = notes[i];
+                                WholeToneScale[1] = notes[i+2];
+                                WholeToneScale[2] = notes[i+4];
+                                WholeToneScale[3] = notes[i+6];
+                                WholeToneScale[4] = notes[i+8];
+                                WholeToneScale[5] = notes[i+10];
 
-								//ディクショナリに格納
-								WholeToneScales[tonic] = WholeToneScale;
-						}
+                                //ディクショナリに格納
+                                WholeToneScales[tonic] = WholeToneScale;
+                        }
 
-						//ディクショナリに格納
-						scales["whole-tone"] = WholeToneScales;
+                        //ディクショナリに格納
+                        scales["whole-tone"] = WholeToneScales;
 
-						//デバッグ
-						for(let key in scales){
-								console.log(key);
-								let scale = scales[key];
-								for(let key2 in scale){
+                        /*デバッグ
+                        for(let key in scales){
+                                console.log(key);
+                                let scale = scales[key];
+                                for(let key2 in scale){
                     console.log(key2);
-										console.log(scale[key2]);
-								}
-						};
+                                        console.log(scale[key2]);
+                                }
+                        };
+            */
 
-				//B. 入力された音が含まれるスケールを検索（todo）
+                //B. 入力された音が含まれるスケールを検索（todo）
           //該当するスケールを格納する文字列を定義
           var resultScales = "";
 
@@ -216,20 +217,20 @@
               resultScales = "";
 
               //(i) まず、選択されたルートと構成音とを取得し、配列に加える
-					    let selectedNotes = new Array(document.getElementById("root").value);
+                        let selectedNotes = new Array(document.getElementById("root").value);
 
-					    //各構成音を取得し、noneでない場合のみ配列（リスト）に追加
-					    for(var i=0; i<5; i++){
-					    		//構成音を取得
-					    		let id = "note" + String(i+1);
-					    		let note = document.getElementById(id).value;
+                        //各構成音を取得し、noneでない場合のみ配列（リスト）に追加
+                        for(var i=0; i<5; i++){
+                                //構成音を取得
+                                let id = "note" + String(i+1);
+                                let note = document.getElementById(id).value;
 
-					    		//A. 構成音が指定されていない（none）の場合
-					    		if(note != "none"){
-							    		//配列に追加
-							    		selectedNotes.push(note);
-					    		}
-					    }
+                                //A. 構成音が指定されていない（none）の場合
+                                if(note != "none"){
+                                        //配列に追加
+                                        selectedNotes.push(note);
+                                }
+                        }
 
               //(ii) スケール毎に検索処理
               //スケールの種類毎
@@ -283,11 +284,12 @@
 
               //(iii) スケール名を出力
               document.getElementById("display2").innerHTML = resultScales;
+              /*デバッグ
               console.log(resultScales);
-
+              */
           }
 
-			//（４）スケールの構成音を表示
+            //（４）スケールの構成音を表示
       function displayNote(){
           //主音と音階の種類とを取得
           let tonic = document.getElementById("tonic").value;
@@ -303,10 +305,10 @@
 
                   //フラットに統一する場合
                   if(tonic == "Db" || tonic == "Eb" || tonic == "F" ||
-  				            tonic == "Ab" || tonic == "Bb"){
+                            tonic == "Ab" || tonic == "Bb"){
                         scaleTones.forEach((item, i) => {
                           let changed = item.replace(/C#/g, "Db")
-                         					          .replace(/D#/g, "Eb")
+                                                      .replace(/D#/g, "Eb")
                                             .replace(/F#/g, "Gb")
                                             .replace(/G#/g, "Ab")
                                             .replace(/A#/g, "Bb");
@@ -337,7 +339,7 @@
                   if(tonic == "Db" || tonic == "Eb"){
                         scaleTones.forEach((item, i) => {
                           let changed = item.replace(/C#/g, "Db")
-                         					          .replace(/D#/g, "Eb")
+                                                      .replace(/D#/g, "Eb")
                                             .replace(/F#/g, "Gb")
                                             .replace(/G#/g, "Ab")
                                             .replace(/A#/g, "Bb");
@@ -347,7 +349,7 @@
                       }
                   //シャープに統一する場合
                   else if(tonic == "D" || tonic == "E" || tonic == "F#" ||
-  				            tonic == "A" || tonic == "B"){
+                            tonic == "A" || tonic == "B"){
                     scaleTones.forEach((item, i) => {
                       let changed = item.replace(/Db/g, "C#")
                                         .replace(/Eb/g, "D#")
@@ -429,6 +431,120 @@
         document.getElementById("scale_type").value = type;
       }
 
+      //（６）コードから構成音１〜３を計算し、表示する関数
+      function chooseChord(){
+        //ルートを取得し、notes配列内でのインデックスを取得
+        let root = document.getElementById("root").value;
+        let rootIndex = notes.indexOf(root);
+
+        //コードの種類を取得
+        let chord = document.getElementById("chord").value;
+
+        //コードの種類によって場合分けし、表示すべき構成音を取得
+        let third = "";
+        let fifth = "";
+
+        switch (chord) {
+            case "major":
+              third = notes[rootIndex + 4];
+              fifth = notes[rootIndex + 7];
+              break;
+
+            case "minor":
+              third = notes[rootIndex + 3];
+              fifth = notes[rootIndex + 7];
+              break;
+
+            case "aug":
+              third = notes[rootIndex + 4];
+              fifth = notes[rootIndex + 8];
+              break;
+
+            case "dim":
+              third = notes[rootIndex + 3];
+              fifth = notes[rootIndex + 6];
+              break;
+
+            default:
+              //関数から抜け出す
+              return;
+              break;
+
+        }
+
+        //確定した構成音を表示（選択させる）
+        //ループ処理で、valueが一致した場合にのみselectedに変更
+
+        //構成音１
+        let note1 = document.getElementById("note1");
+        let len1 = note1.length;
+        for(let i=0; i<len1; i++){
+            if(note1.options[i].value == root){
+                note1.options[i].selected = true;
+                break;
+            }
+        }
+
+        //構成音２
+        let note2 = document.getElementById("note2");
+        let len2 = note2.length;
+        for(let i=0; i<len2; i++){
+            if(note2.options[i].value == third){
+                note2.options[i].selected = true;
+                break;
+            }
+        }
+
+        //構成音３
+        let note3 = document.getElementById("note3");
+        let len3 = note3.length;
+        for(let i=0; i<len3; i++){
+            if(note3.options[i].value == fifth){
+                note3.options[i].selected = true;
+                break;
+            }
+        }
+
+        //音程表示関数を実施
+        displayInterval();
+
+      }
+
+      //（７）選択されたテンションを構成音４に表示する関数
+      function addTension(){
+        //ルートを取得し、notes配列内でのインデックスを取得
+        let root = document.getElementById("root").value;
+        let rootIndex = notes.indexOf(root);
+
+        //テンションを取得
+        let num = document.getElementById("tension").value;
+
+        //未選択の場合
+        if(num == "none"){
+            //選択をデフォルトに戻す
+            let len = note4.length;
+            for(let i=0; i<len; i++){
+                note4.options[i].selected = false;
+            }
+        }
+        //選択されている場合
+        else{
+            //構成音４を選択
+            let tension = notes[rootIndex + Number(num)];
+
+            let len = note4.length;
+            for(let i=0; i<len; i++){
+                if(note4.options[i].value == tension){
+                    note4.options[i].selected = true;
+                    break;
+                }
+            }
+        }
+
+        //音程表示関数を実施
+        displayInterval();
+
+      }
 
         </script>
     </head>
@@ -439,116 +555,136 @@
             <h1>音階計算ツール</h1>
         <div id="main">
 
-	        <div id="choose">
-	        ルート（根音）：
-	        <select id="root" size="1" onchange="displayInterval()">
-	            <option selected value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br>
-	        構成音１：
-	        <select id="note1" size="1" onchange="displayInterval()">
-	        	  <option selected value="none">none</option>
-	            <option value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br>
-	        構成音２：
-	        <select id="note2" size="1" onchange="displayInterval()">
-	        	  <option selected value="none">none</option>
-	            <option value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br>
-	        構成音３：
-	        <select id="note3" size="1" onchange="displayInterval()">
-	        	  <option selected value="none">none</option>
-	            <option value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br>
-	        構成音４：
-	        <select id="note4" size="1" onchange="displayInterval()">
-	        	  <option selected value="none">none</option>
-	            <option value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br>
-	        構成音５：
-	        <select id="note5" size="1" onchange="displayInterval()">
-	        	  <option selected value="none">none</option>
-	            <option value="C">C</option>
-	            <option value="Db">Db（C#）</option>
-	            <option value="D">D</option>
-	            <option value="Eb">Eb（D#）</option>
-	            <option value="E">E</option>
-	            <option value="F">F</option>
-	            <option value="F#">F#（Gb）</option>
-	            <option value="G">G</option>
-	            <option value="Ab">Ab（G#）</option>
-	            <option value="A">A</option>
-	            <option value="Bb">Bb（A#）</option>
-	            <option value="B">B</option>
-	        </select><br><br>
-	        <input type="button" id="search" value="構成音が含まれるスケールを表示" onClick="displayScale()"><br>
-	        </div>
+            <div id="choose">
+            ルート（根音）：
+            <select id="root" size="1" onchange="displayInterval()">
+                <option selected value="C">C</option>
+                <option value="Db">Db（C#）</option>
+                <option value="D">D</option>
+                <option value="Eb">Eb（D#）</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#（Gb）</option>
+                <option value="G">G</option>
+                <option value="Ab">Ab（G#）</option>
+                <option value="A">A</option>
+                <option value="Bb">Bb（A#）</option>
+                <option value="B">B</option>
+            </select><br>
+          コードの種類から選択（構成音１〜３に追加）<br>
+          <select id="chord" size="1" onchange="chooseChord()">
+              <option selected value="none">none</option>
+              <option value="major">メジャー</option>
+              <option value="minor">マイナー</option>
+              <option value="aug">オーグメント</option>
+              <option value="dim">ディミニッシュド</option>
+          </select>
+          <br>
+          ナチュラルテンション（構成音４に追加）<br>
+          <select id="tension" size="1" onchange="addTension()">
+              <option selected value="none">none</option>
+              <option value=9>6th</option>
+              <option value=10>m7th</option>
+              <option value=11>M7th</option>
+              <option value=2>9th</option>
+              <option value=5>11th</option>
+          </select>
+          <br><br>
+            構成音１：
+            <select id="note1" size="1" onchange="displayInterval()">
+              <option selected value="none">none</option>
+              <option value="C">C</option>
+              <option value="Db">Db（C#）</option>
+              <option value="D">D</option>
+              <option value="Eb">Eb（D#）</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="F#">F#（Gb）</option>
+              <option value="G">G</option>
+              <option value="Ab">Ab（G#）</option>
+              <option value="A">A</option>
+              <option value="Bb">Bb（A#）</option>
+              <option value="B">B</option>
+            </select><br>
+            構成音２：
+            <select id="note2" size="1" onchange="displayInterval()">
+                  <option selected value="none">none</option>
+                <option value="C">C</option>
+                <option value="Db">Db（C#）</option>
+                <option value="D">D</option>
+                <option value="Eb">Eb（D#）</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#（Gb）</option>
+                <option value="G">G</option>
+                <option value="Ab">Ab（G#）</option>
+                <option value="A">A</option>
+                <option value="Bb">Bb（A#）</option>
+                <option value="B">B</option>
+            </select><br>
+            構成音３：
+            <select id="note3" size="1" onchange="displayInterval()">
+                  <option selected value="none">none</option>
+                <option value="C">C</option>
+                <option value="Db">Db（C#）</option>
+                <option value="D">D</option>
+                <option value="Eb">Eb（D#）</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#（Gb）</option>
+                <option value="G">G</option>
+                <option value="Ab">Ab（G#）</option>
+                <option value="A">A</option>
+                <option value="Bb">Bb（A#）</option>
+                <option value="B">B</option>
+            </select><br>
+            構成音４：
+            <select id="note4" size="1" onchange="displayInterval()">
+                  <option selected value="none">none</option>
+                <option value="C">C</option>
+                <option value="Db">Db（C#）</option>
+                <option value="D">D</option>
+                <option value="Eb">Eb（D#）</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#（Gb）</option>
+                <option value="G">G</option>
+                <option value="Ab">Ab（G#）</option>
+                <option value="A">A</option>
+                <option value="Bb">Bb（A#）</option>
+                <option value="B">B</option>
+            </select><br>
+            構成音５：
+            <select id="note5" size="1" onchange="displayInterval()">
+                  <option selected value="none">none</option>
+                <option value="C">C</option>
+                <option value="Db">Db（C#）</option>
+                <option value="D">D</option>
+                <option value="Eb">Eb（D#）</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F#（Gb）</option>
+                <option value="G">G</option>
+                <option value="Ab">Ab（G#）</option>
+                <option value="A">A</option>
+                <option value="Bb">Bb（A#）</option>
+                <option value="B">B</option>
+            </select><br><br>
+            <input type="button" id="search" value="根音・構成音が含まれるスケールを表示" onClick="displayScale()"><br>
+            </div>
 
-	        <div id="display1">
-	            音程１：<input type="text" id="interval1"><br>
-	            音程２：<input type="text" id="interval2"><br>
-	            音程３：<input type="text" id="interval3"><br>
-	            音程４：<input type="text" id="interval4"><br>
-	            音程５：<input type="text" id="interval5"><br>
-	        </div>
+            <div id="display1">
+                音程１：<input type="text" id="interval1"><br>
+                音程２：<input type="text" id="interval2"><br>
+                音程３：<input type="text" id="interval3"><br>
+                音程４：<input type="text" id="interval4"><br>
+                音程５：<input type="text" id="interval5"><br>
+              <br>
+            </div>
 
           スケール：<br>
-	        <div id="display2">
-	        </div>
+            <div id="display2">
+            </div>
 
           <div id="scaleNotes">
             主音（tonic）：
