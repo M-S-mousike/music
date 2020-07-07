@@ -111,7 +111,33 @@
                         //ディクショナリに格納
                         scales["melodic minor"] = melodicMinorScales;
 
-                    //(iii) ディミニッシュドスケール（half-step/whole-step）
+          //(ii) ハーモニックマイナースケール
+                        //ハーモニックマイナースケールを格納するディクショナリを初期化
+                        var harmonicMinorScales = {};
+
+                        //ループ処理で、C~Bまでの各ハーモニックマイナースケールを配列として作成
+                        for(var i=0; i<12; i++){
+                                //主音を定義
+                                let tonic = notes[i];
+                                let harmonicMinorScale = new Array(7);
+
+                                //ハーモニックマイナーの各音を配列に代入
+                                harmonicMinorScale[0] = notes[i];
+                                harmonicMinorScale[1] = notes[i+2];
+                                harmonicMinorScale[2] = notes[i+3];
+                                harmonicMinorScale[3] = notes[i+5];
+                                harmonicMinorScale[4] = notes[i+7];
+                                harmonicMinorScale[5] = notes[i+8];
+                                harmonicMinorScale[6] = notes[i+11];
+
+                                //ディクショナリに格納
+                                harmonicMinorScales[tonic] = harmonicMinorScale;
+                        }
+
+                        //ディクショナリに格納
+                        scales["harmonic minor"] = harmonicMinorScales;
+
+                    //(iv) ディミニッシュドスケール（half-step/whole-step）
                         //ディミニッシュドスケールを格納するディクショナリを初期化
                         var HalfWholeDiminishedScales = {};
 
@@ -141,7 +167,7 @@
                         //ディクショナリに格納
                         scales["half-step/whole-step diminished"] = HalfWholeDiminishedScales;
 
-                    //(iv) ディミニッシュドスケール（whole-step/half-step）
+                    //(v) ディミニッシュドスケール（whole-step/half-step）
                         //ディミニッシュドスケールを格納するディクショナリを初期化
                         var WholeHalfDiminishedScales = {};
 
@@ -171,7 +197,7 @@
                         //ディクショナリに格納
                         scales["whole-step/half-step diminished"] = WholeHalfDiminishedScales;
 
-                    //(v) ホールトーンスケール
+                    //(vi) ホールトーンスケール
                         //ホールトーンスケールを格納するディクショナリを初期化
                         var WholeToneScales = {};
 
@@ -361,9 +387,50 @@
                     });
                   }
 
+                  //cf. G melodic minorは、#とbとが混在せざるを得ない
                   break;
 
-              //C. ディミニッシュドスケール（half-step/whole-step）の場合
+              //C. ハーモニックマイナースケールの場合
+              case "harmonic minor":
+                  scaleTones = scales[type][tonic];
+
+                  //フラットに統一する場合
+                  if(tonic == "Db" || tonic == "Eb" || tonic == "Bb"){
+                        scaleTones.forEach((item, i) => {
+                          let changed = item.replace(/C#/g, "Db")
+                                                      .replace(/D#/g, "Eb")
+                                            .replace(/F#/g, "Gb")
+                                            .replace(/G#/g, "Ab")
+                                            .replace(/A#/g, "Bb");
+
+                          scaleTones[i] = changed;
+                        });
+                      }
+                  //シャープに統一する場合
+                  else if(tonic == "E" || tonic == "F#" ||
+                            tonic == "A" || tonic == "B"){
+                    scaleTones.forEach((item, i) => {
+                      let changed = item.replace(/Db/g, "C#")
+                                        .replace(/Eb/g, "D#")
+                                        .replace(/Gb/g, "F#")
+                                        .replace(/Ab/g, "G#")
+                                        .replace(/Bb/g, "A#");
+
+                          scaleTones[i] = changed;
+                    });
+                  }
+                  //その他特殊なケース（D harmonic minor）
+                  else if(tonic == "D"){
+                    scaleTones.forEach((item, i) => {
+                      let changed = item.replace(/Db/g, "C#");
+
+                          scaleTones[i] = changed;
+                    });
+                  }
+                  //cf.G harmonic minorは、#とbとが混在せざるを得ない
+                  break;
+
+              //D. ディミニッシュドスケール（half-step/whole-step）の場合
               case "half-step/whole-step diminished":
                   if(tonic == "C" || tonic == "Eb" || tonic == "F#" ||
                       tonic == "A"){
@@ -379,7 +446,7 @@
 
                   break;
 
-              //D. ディミニッシュドスケール（whole-step/half-step）の場合
+              //E. ディミニッシュドスケール（whole-step/half-step）の場合
               case "whole-step/half-step diminished":
                   if(tonic == "C" || tonic == "Eb" || tonic == "F#" ||
                       tonic == "A"){
@@ -395,7 +462,7 @@
 
                   break;
 
-              //E. ホールトーンスケールの場合
+              //F. ホールトーンスケールの場合
               case "whole-tone":
                   if(tonic == "C" || tonic == "D" || tonic == "E" ||
                       tonic == "F#" || tonic == "Ab" || tonic == "Bb" ||
@@ -570,8 +637,11 @@
                 <option value="A">A</option>
                 <option value="Bb">Bb（A#）</option>
                 <option value="B">B</option>
-            </select><br>
-          コードの種類から選択（構成音１〜３に追加）<br>
+            </select>
+          <input type="button" value="ルートの変更をコードに反映" onClick="chooseChord(),addTension()"><br>
+          <br>
+          コードの種類から選択（構成音１〜３に追加）
+          <br>
           <select id="chord" size="1" onchange="chooseChord()">
               <option selected value="none">none</option>
               <option value="major">メジャー</option>
@@ -669,20 +739,24 @@
                 <option value="A">A</option>
                 <option value="Bb">Bb（A#）</option>
                 <option value="B">B</option>
-            </select><br><br>
-            <input type="button" id="search" value="根音・構成音が含まれるスケールを表示" onClick="displayScale()"><br>
+            </select><br>
             </div>
 
             <div id="display1">
+            <br>
+              ルートから見た音程<br>
                 音程１：<input type="text" id="interval1"><br>
                 音程２：<input type="text" id="interval2"><br>
                 音程３：<input type="text" id="interval3"><br>
                 音程４：<input type="text" id="interval4"><br>
                 音程５：<input type="text" id="interval5"><br>
-              <br>
+            <br>
+                <input type="button" id="search" value="上記の根音・構成音が含まれるスケールを表示" onClick="displayScale()">
+            <br>
             </div>
-
-          スケール：<br>
+          <br>
+            スケール：
+          <br>
             <div id="display2">
             </div>
 
@@ -706,6 +780,7 @@
             <select id="scale_type" size="1" onchange="displayNote()">
                 <option selected value="major">major scale</option>
                 <option value="melodic minor">melodic minor scale</option>
+                <option value="harmonic minor">harmonic minor scale</option>
                 <option value="half-step/whole-step diminished">
                   half-step/whole-step diminished scale</option>
                 <option value="whole-step/half-step diminished">
